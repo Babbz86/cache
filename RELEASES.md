@@ -1,5 +1,114 @@
 # Releases
 
+## How to prepare a release
+
+> [!NOTE]
+> Relevant for maintainers with write access only.
+
+1. Switch to a new branch from `main`.
+1. Run `npm test` to ensure all tests are passing.
+1. Update the version in [`package.json`](package.json).
+1. Run `npm run build` to update the compiled files.
+1. Update this [`RELEASES.md`](RELEASES.md) with the new version and changes in the `## Changelog` section.
+1. Run `licensed cache` to update the license report.
+1. Run `licensed status` and resolve any warnings by updating the [`.licensed.yml`](.licensed.yml) file with the exceptions.
+1. Commit your changes and push your branch upstream.
+1. Open a pull request against `main` and get it reviewed and merged.
+1. Draft a new release https://github.com/actions/cache/releases use the same version number used in `package.json`
+    1. Create a new tag with the version number.
+    1. Auto generate release notes and update them to match the changes you made in `RELEASES.md`.
+    1. Toggle the set as the latest release option.
+    1. Publish the release.
+1. Navigate to https://github.com/actions/cache/actions/workflows/release-new-action-version.yml
+    1. There should be a workflow run queued with the same version number.
+    1. Approve the run to publish the new version and update the major tags for this action.
+
+## Changelog
+
+### 6.1.0
+
+- Bump `@actions/cache` to v6.1.0 to pick up [actions/toolkit#2435 Handle cache write error due to read-only token](https://github.com/actions/toolkit/pull/2435)
+- Switch redundant "Cache save failed" warning to debug log in save-only
+
+### 6.0.0
+
+- Updated `@actions/cache` to ^6.0.1, `@actions/core` to ^3.0.1, `@actions/exec` to ^3.0.0, `@actions/io` to ^3.0.2
+- Migrated to ESM module system
+- Upgraded Jest to v30 and test infrastructure to be ESM compatible
+
+### 5.0.4
+
+- Bump `minimatch` to v3.1.5 (fixes ReDoS via globstar patterns)
+- Bump `undici` to v6.24.1 (WebSocket decompression bomb protection, header validation fixes)
+- Bump `fast-xml-parser` to v5.5.6
+
+### 5.0.3
+
+- Bump `@actions/cache` to v5.0.5 (Resolves: https://github.com/actions/cache/security/dependabot/33)
+- Bump `@actions/core` to v2.0.3
+
+### 5.0.2
+
+- Bump `@actions/cache` to v5.0.3 [#1692](https://github.com/actions/cache/pull/1692)
+
+### 5.0.1
+
+- Update `@azure/storage-blob` to `^12.29.1` via `@actions/cache@5.0.1` [#1685](https://github.com/actions/cache/pull/1685)
+
+### 5.0.0
+
+> [!IMPORTANT]
+> `actions/cache@v5` runs on the Node.js 24 runtime and requires a minimum Actions Runner version of `2.327.1`.
+> If you are using self-hosted runners, ensure they are updated before upgrading.
+
+### 4.3.0
+
+- Bump `@actions/cache` to [v4.1.0](https://github.com/actions/toolkit/pull/2132)
+
+### 4.2.4
+
+- Bump `@actions/cache` to v4.0.5
+
+### 4.2.3
+
+- Bump `@actions/cache` to v4.0.3 (obfuscates SAS token in debug logs for cache entries)
+
+### 4.2.2
+
+- Bump `@actions/cache` to v4.0.2
+
+### 4.2.1
+
+- Bump `@actions/cache` to v4.0.1
+
+### 4.2.0
+
+TLDR; The cache backend service has been rewritten from the ground up for improved performance and reliability. [actions/cache](https://github.com/actions/cache) now integrates with the new cache service (v2) APIs.
+
+The new service will gradually roll out as of **February 1st, 2025**. The legacy service will also be sunset on the same date. Changes in these release are **fully backward compatible**.
+
+**We are deprecating some versions of this action**. We recommend upgrading to version `v4` or `v3` as soon as possible before **February 1st, 2025.** (Upgrade instructions below).
+
+If you are using pinned SHAs, please use the SHAs of versions `v4.2.0` or `v3.4.0`
+
+If you do not upgrade, all workflow runs using any of the deprecated [actions/cache](https://github.com/actions/cache) will fail.
+
+Upgrading to the recommended versions will not break your workflows.
+
+### 4.1.2
+
+- Add GitHub Enterprise Cloud instances hostname filters to inform API endpoint choices - [#1474](https://github.com/actions/cache/pull/1474)
+- Security fix: Bump braces from 3.0.2 to 3.0.3 - [#1475](https://github.com/actions/cache/pull/1475)
+
+### 4.1.1
+
+- Restore original behavior of `cache-hit` output - [#1467](https://github.com/actions/cache/pull/1467)
+
+### 4.1.0
+
+- Ensure `cache-hit` output is set when a cache is missed - [#1404](https://github.com/actions/cache/pull/1404)
+- Deprecate `save-always` input - [#1452](https://github.com/actions/cache/pull/1452)
+
 ### 4.0.2
 
 - Fixed restore `fail-on-cache-miss` not working.
@@ -11,6 +120,10 @@
 ### 4.0.0
 
 - Updated minimum runner version support from node 12 -> node 20
+
+### 3.4.0
+
+- Integrated with the new cache service (v2) APIs
 
 ### 3.3.3
 
